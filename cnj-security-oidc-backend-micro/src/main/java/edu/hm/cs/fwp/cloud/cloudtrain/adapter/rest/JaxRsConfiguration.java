@@ -1,5 +1,7 @@
 package edu.hm.cs.fwp.cloud.cloudtrain.adapter.rest;
 
+import org.eclipse.microprofile.auth.LoginConfig;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
@@ -16,6 +18,7 @@ import javax.ws.rs.core.Application;
  */
 @ApplicationScoped
 @ApplicationPath("api")
+@LoginConfig(authMethod="MP-JWT", realmName = "MP-JWT")
 public class JaxRsConfiguration extends Application {
 
 }

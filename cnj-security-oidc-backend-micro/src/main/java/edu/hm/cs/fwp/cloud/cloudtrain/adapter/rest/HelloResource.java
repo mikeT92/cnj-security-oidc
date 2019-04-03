@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
  * </p>
  */
 @RequestScoped
-@Path("v1/cloudtrain")
+@Path("v1/hello")
 public class HelloResource {
 
     @Inject

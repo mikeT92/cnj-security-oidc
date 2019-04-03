@@ -9,7 +9,7 @@ version: '3'
 services:
 
   backend:
-    image: hmfwpcnj/cnj-cloudtrain-oidc-backend-micro:latest
+    image: hmfwpcnj/cnj-security-oidc-backend-micro:latest
     ports:
       - "8080:8080"
       - "4848:4848"
