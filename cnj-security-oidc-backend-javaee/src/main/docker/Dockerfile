@@ -23,3 +23,5 @@ RUN \
 
 # copy build artifact into payara deployment folder
 COPY *.war ${DEPLOY_DIR}/
+
+

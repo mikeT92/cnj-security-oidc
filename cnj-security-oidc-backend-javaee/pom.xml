@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>edu.hm.cs.fwp.cloud</groupId>
     <artifactId>cnj-security-oidc-backend-javaee</artifactId>
-    <version>0.8.0</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <description>Cloud native Java backend using OpenID Connect Security based on Java EE Full Profile</description>
     <properties>
@@ -16,6 +16,20 @@
         <docker.removeMode>all</docker.removeMode>
         <docker.cleanup>try</docker.cleanup>
         <docker.verbose>true</docker.verbose>
+        <microprofile.version>2.1</microprofile.version>
+        <maven.docker.plugin.version>0.27.2</maven.docker.plugin.version>
+        <maven.docker.compose.plugin.version>2.2.0</maven.docker.compose.plugin.version>
+        <maven.enforcer.plugin.version>3.0.0-M2</maven.enforcer.plugin.version>
+        <maven.failsafe.plugin.version>2.22.1</maven.failsafe.plugin.version>
+        <maven.surefire.plugin.version>2.22.1</maven.surefire.plugin.version>
+        <maven.compiler.plugin.version>3.8.0</maven.compiler.plugin.version>
+        <maven.jar.plugin.version>3.1.1</maven.jar.plugin.version>
+        <maven.resources.plugin.version>3.1.0</maven.resources.plugin.version>
+        <maven.clean.plugin.version>3.1.0</maven.clean.plugin.version>
+        <maven.deploy.plugin.version>2.8.2</maven.deploy.plugin.version>
+        <maven.install.plugin.version>2.5.2</maven.install.plugin.version>
+        <maven.site.plugin.version>3.7.1</maven.site.plugin.version>
+        <maven.war.plugin.version>3.2.2</maven.war.plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -56,6 +70,15 @@
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <!-- Payara MicroProfile API BOM imports all MicroProfile API's -->
+        <!-- declaring this particular BOM in dependencyManagement section does not work!!! -->
+        <dependency>
+            <groupId>org.eclipse.microprofile</groupId>
+            <artifactId>microprofile</artifactId>
+            <version>${microprofile.version}</version>
+            <type>pom</type>
+            <scope>provided</scope>
+        </dependency>
         <!-- Miscellaneous 3rd party stuff -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -86,7 +109,7 @@
         <dependency>
             <groupId>edu.hm.cs.fwp.cloud</groupId>
             <artifactId>cnj-security-oidc-backend-test</artifactId>
-            <version>0.8.0</version>
+            <version>1.0.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -96,52 +119,53 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven.clean.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.0</version>
+                    <version>${maven.compiler.plugin.version}</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
+                        <parameters>true</parameters>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>2.8.2</version>
+                    <version>${maven.deploy.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.0.0-M2</version>
+                    <version>${maven.enforcer.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>2.5.2</version>
+                    <version>${maven.install.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.7.1</version>
+                    <version>${maven.site.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.1</version>
+                    <version>${maven.surefire.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-failsafe-plugin</artifactId>
-                    <version>2.22.1</version>
+                    <version>${maven.failsafe.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven.resources.plugin.version}</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-war-plugin</artifactId>
-                    <version>3.2.2</version>
+                    <version>${maven.war.plugin.version}</version>
                     <configuration>
                         <failOnMissingWebXml>false</failOnMissingWebXml>
                     </configuration>
@@ -150,19 +174,13 @@
                 <plugin>
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
-                    <version>0.28.0</version>
+                    <version>${maven.docker.plugin.version}</version>
                 </plugin>
                 <!-- Docker Compose Maven plugin to run docker container groups for testing -->
                 <plugin>
                     <groupId>com.dkanejs.maven.plugins</groupId>
                     <artifactId>docker-compose-maven-plugin</artifactId>
-                    <version>2.0.1</version>
-                </plugin>
-                <!-- Fabric8 Maven plugin to deploy to Kubernetes/Openshift -->
-                <plugin>
-                    <groupId>io.fabric8</groupId>
-                    <artifactId>fabric8-maven-plugin</artifactId>
-                    <version>3.5.42</version>
+                    <version>${maven.docker.compose.plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -251,168 +269,7 @@
                                         <image>
                                             <name>${docker.image.name}</name>
                                             <build>
-                                                <dockerFileDir>${project.build.directory}/docker-resources
-                                                </dockerFileDir>
-                                                <tags>
-                                                    <tag>${project.version}</tag>
-                                                </tags>
-                                            </build>
-                                        </image>
-                                    </images>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>com.dkanejs.maven.plugins</groupId>
-                        <artifactId>docker-compose-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>start-docker-containers</id>
-                                <phase>pre-integration-test</phase>
-                                <goals>
-                                    <goal>up</goal>
-                                </goals>
-                                <configuration>
-                                    <composeFile>
-                                        ${project.basedir}/src/test/docker/${project.artifactId}/docker-compose.yml
-                                    </composeFile>
-                                    <detachedMode>true</detachedMode>
-                                    <verbose>false</verbose>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop-docker-containers</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>down</goal>
-                                </goals>
-                                <configuration>
-                                    <composeFile>
-                                        ${project.basedir}/src/test/docker/${project.artifactId}/docker-compose.yml
-                                    </composeFile>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-failsafe-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>run-system-tests</id>
-                                <goals>
-                                    <goal>integration-test</goal>
-                                </goals>
-                                <phase>integration-test</phase>
-                                <configuration>
-                                    <forkCount>0</forkCount>
-                                    <includes>
-                                        <include>**/*SystemTest.java</include>
-                                    </includes>
-                                    <systemPropertyVariables>
-                                        <test.target.route>${test.target.route}</test.target.route>
-                                    </systemPropertyVariables>
-                                    <dependenciesToScan>
-                                        <dependency>edu.hm.cs.fwp.cloud:cnj-security-oidc-backend-test</dependency>
-                                    </dependenciesToScan>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>verify-system-test-results</id>
-                                <goals>
-                                    <goal>verify</goal>
-                                </goals>
-                                <phase>verify</phase>
-                                <configuration>
-                                    <failIfNoTests>true</failIfNoTests>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>commit-stage</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <excludes>
-                                <exclude>**/*SystemTest.java</exclude>
-                            </excludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>copy-docker-resources</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <resources>
-                                        <resource>
-                                            <directory>${project.basedir}/src/main/docker</directory>
-                                            <filtering>true</filtering>
-                                        </resource>
-                                        <resource>
-                                            <directory>${project.build.directory}</directory>
-                                            <includes>
-                                                <include>*.war</include>
-                                            </includes>
-                                        </resource>
-                                    </resources>
-                                    <outputDirectory>${project.build.directory}/docker-resources</outputDirectory>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>build-docker-image</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                </goals>
-                                <configuration>
-                                    <images>
-                                        <image>
-                                            <name>${docker.image.name}</name>
-                                            <build>
-                                                <dockerFileDir>${project.build.directory}/docker-resources
-                                                </dockerFileDir>
-                                                <tags>
-                                                    <tag>${project.version}</tag>
-                                                </tags>
-                                            </build>
-                                        </image>
-                                    </images>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>push-docker-image</id>
-                                <phase>deploy</phase>
-                                <goals>
-                                    <goal>push</goal>
-                                    <goal>remove</goal>
-                                </goals>
-                                <configuration>
-                                    <images>
-                                        <image>
-                                            <name>${docker.image.name}</name>
-                                            <build>
-                                                <dockerFileDir>${project.build.directory}/docker-resources
-                                                </dockerFileDir>
+                                                <dockerFileDir>${project.build.directory}/docker-resources</dockerFileDir>
                                                 <tags>
                                                     <tag>${project.version}</tag>
                                                 </tags>
@@ -494,11 +351,4 @@
             </build>
         </profile>
     </profiles>
-    <distributionManagement>
-        <repository>
-            <id>at41-maven-repository</id>
-            <name>msg Automotive AT Maven Releases Repository</name>
-            <url>https://nexus.at.automotive.msg.team/repository/msgoat-maven-releases/</url>
-        </repository>
-    </distributionManagement>
 </project>

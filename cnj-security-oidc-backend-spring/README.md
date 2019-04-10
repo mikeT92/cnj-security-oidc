@@ -1,31 +1,29 @@
-# cnj-hello-backend-spring
+# cnj-security-oidc-backend-spring
 
-Simplest possible cloud native java application based on Spring Boot.
-
-## Docker Pull Command
-`docker pull docker.at.automotive.msg.team/cloudtrain/cnj-hello-backend-spring`
-
-## Run this application 
-
-``` 
-docker run --name cnj-hello-backend-spring -p 8080:8080 docker.at.automotive.msg.team/cloudtrain/cnj-hello-backend-spring
-```
+Cloud native Java backend exposing REST endpoints protected by OpenID Connect security based on Spring Boot.
+In this showcase, OpenID Connect security is added by using KeyCloak's Spring Boot Adapter.
 
 ## Build this application 
 
-TODO: add build instructions!
+See [cnj-security-oidc](../README.md) for build instructions.
+
+``` 
+mvn clean verify -P pre-commit-stage
+```
+
+Build results: a Docker image containing an Spring Boot application as Uber JAR.
 
 ## Exposed REST endpoints
 
 ### /api/v1/hello
 
-Returns a simple welcome message user in JSON format
+Returns a simple welcome message to the currently authenticated user.
 
 Method
 : GET
 
 URI
-: /v1/hello
+: /api/v1/hello
 
 Parameter(s)
 : none
@@ -34,19 +32,20 @@ Response
 : welcome message as JSON document
 
 Authentication type
-: none
+: Bearer Token
 
 Role(s) required
-: none
-
+: CLOUDTRAIN_USER
 
 ## Exposed environment variables
+
+TODO: still need to figure out, how KeyCloaks application properties can be turned into environment variables.
 
 ## Exposed Ports
 
 | Port | Protocol | Description |
 | --- | --- | --- |
-| 8080 | HTTP | HTTP endpoint of this Spring Boot application | 
+| 8080 | HTTP | HTTP endpoint of this application | 
  
 ## Version / Tags
 
