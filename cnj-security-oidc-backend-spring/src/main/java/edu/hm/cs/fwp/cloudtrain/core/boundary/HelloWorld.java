@@ -1,6 +1,7 @@
 package edu.hm.cs.fwp.cloudtrain.core.boundary;
 
 import edu.hm.cs.fwp.cloudtrain.core.entity.Message;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.UUID;
  * </p>
  */
 @Service
+@Secured("CLOUDTRAIN_USER")
 public class HelloWorld {
 
     private static final String WELCOME_MESSAGE_TEMPLATE = "Dear \"%s\", welcome to a cloud native Java application protected by OpenID Connect!";
